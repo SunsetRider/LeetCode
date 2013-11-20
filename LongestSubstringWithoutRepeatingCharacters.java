@@ -1,17 +1,17 @@
-/* 
-*  Problem:
-*  Given a string, find the length of the longest substring without repeating characters.
-*  For example, the longest substring without repeating letters for "abcabcbb" is "abc", which the length is 3. 
-*  For "bbbbb" the longest substring is "b", with the length of 1.
-*/
+/** 
+ *  Problem:
+ *  Given a string, find the length of the longest substring without repeating characters.
+ *  For example, the longest substring without repeating letters for "abcabcbb" is "abc", which the length is 3. 
+ *  For "bbbbb" the longest substring is "b", with the length of 1.
+ */
 
-/*
-*  Algorithm 1:
-*  1.Find all the substrings without repeating characters.
-*  2.Find the max length of the substrings. 
-*  Time Complexity:
-*  O(n)
-*/
+/**
+ *  Algorithm 1:
+ *  1.Find all the substrings without repeating characters.
+ *  2.Find the max length of the substrings. 
+ *  Time Complexity:
+ *  O(n)
+ */
 public class Solution {
     public int lengthOfLongestSubstring(String s) {
         // Note: The Solution object is instantiated only once and is reused by each test case.
@@ -47,13 +47,13 @@ public class Solution {
     }
 }
 
-/*
-*  Algorithm 2:
-*  1.Track the length of substring without repeating characters while travesing the string;
-*  2.Compare the current length with max length, if it's larger than max, set it to max.
-*  Time Complexity:
-*  O(n)
-*/
+/**
+ *  Algorithm 2:
+ *  1.Track the length of substring without repeating characters while travesing the string;
+ *  2.Compare the current length with max length, if it's larger than max, set it to max.
+ *  Time Complexity:
+ *  O(n)
+ */
 
 public class Solution {
     public int lengthOfLongestSubstring(String s) {
