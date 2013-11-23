@@ -31,42 +31,78 @@
 
 /**
  * Algorithm 1:
- *
+ * Follow the requirements above.
  */
 
 public class Solution {
     public int atoi(String str) {
         // IMPORTANT: Please reset any member data you declared, as
         // the same Solution instance will be reused for each test case.
+        if (str == null)
+            return 0;
 
         int result = 0;
-        boolean negative;
+        boolean negative = false;
         boolean sign = false;
         boolean digit = false;
-        int digitStartAt = 0;
-        
+        int digitStartIndex = 0;
+        int signStartIndex = 0;
 
-        for (int i = 0; i++ < str.length(); i++) {
+
+        for (int i = 0; i < str.length(); i++) {
             if (str.charAt(i) >= '0' && str.charAt(i) <= '9') {
-                digitStartAt = i;
+                digitStartIndex = i;
+                digit = true;
                 break;
             }
-            if (!sign && str.charAt(i) == ' ')
-                continue;
-            
-            if (!sign && str.charAt(i) == '-') {
+
+            if (str.charAt(i) == '-') {
                 negative = true;
                 sign = true;
-            }
-            else if (!sign && str.charAt(i) == '+') {
+                signStartIndex = i;
+                break;
+            } else if (str.charAt(i) == '+') {
                 sign = true;
-                continue;
+                signStartIndex = i;
+                break;
             }
-            
-            
+
+            if (str.charAt(i) == ' ') {
+                continue;
+            } else if (str.charAt(i) < '0' || str.charAt(i) > '9') {
+                return 0;
+            }
         }
 
-        Integer.parseInt();
+        if (!digit && !sign) {
+            return 0;
+        } else if (sign) {
+            digitStartIndex = signStartIndex + 1;
+        }
+
+        int intLength = 0;
+        for (int i = 0; i + digitStartIndex < str.length(); i++) {
+            if (str.charAt(i+digitStartIndex) >= '0' && str.charAt(i+digitStartIndex) <= '9') {
+                intLength++;
+            } else {
+                break;
+            }
+        }
+
+        for (int i = 0; i < intLength; i++) {
+            if (negative) {
+                if (result - (int)(str.charAt(i+digitStartIndex)-'0')*Math.pow(10, intLength-1-i) >= Integer.MIN_VALUE)
+                    result -= (int)(str.charAt(i+digitStartIndex)-'0')*Math.pow(10, intLength-1-i);
+                else
+                    return Integer.MIN_VALUE;
+            } else {
+                if (result + (int)(str.charAt(i+digitStartIndex)-'0')*Math.pow(10, intLength-1-i) <= Integer.MAX_VALUE)
+                    result += (int)(str.charAt(i+digitStartIndex)-'0')*Math.pow(10, intLength-1-i);
+                else
+                    return Integer.MAX_VALUE;
+            }
+        }
+
         return result;
     }
 }
