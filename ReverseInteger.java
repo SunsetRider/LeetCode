@@ -18,7 +18,9 @@
 
 /**
  * Algorithm 1:
- * Use library method.
+ * 1.Convert the integer to string;
+ * 2.Reverse the string;
+ * 3.Convert the string to integer.
  */
 public class Solution {
     public int reverse(int x) {
@@ -37,3 +39,21 @@ public class Solution {
         return rvsInt;
     }
 }
+
+/**
+ * Algorithm 2:
+ * No need to convert the integer to string.
+ */
+public class Solution {
+    public int reverse(int num) {
+        int rev = 0;
+        while (num != 0) {
+            rev = rev * 10 + num % 10;
+            num /= 10;
+        }
+        
+        return rev;
+    }
+}
+
+
