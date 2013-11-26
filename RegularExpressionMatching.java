@@ -22,61 +22,21 @@
 
 /**
  * Algorithm 1:
- * 
+ * change the C code below to java.
  */
-public class Solution {
-    public boolean isMatch(String s, String p) {
-        // IMPORTANT: Please reset any member data you declared, as
-        // the same Solution instance will be reused for each test case.
-        if (s == null) {
-            if (p == ".*" || p == null)
-                return true;
-            else 
-                return false;
-        }
-            
-        int pi = 0;
-        StringBuilder pb = new StringBuilder (p);
-        for (int si = 0; si < s.length(); si++) {
-            if (pi >= pb.length()) {
-                return false;
-            }
-            
-            if (s.charAt(si) == pb.charAt(pi)) {
-                pi++;
-            } else if (pb.charAt(pi) == '.') {
-                pb.setCharAt(pi, s.charAt(si));
-                pi++;
-            } else if (pb.charAt(pi) == '*') {
-                if (pi-1 >= 0) {
-                    if (pb.charAt(pi-1) == s.charAt(si))
-                        continue;
-                } else {
-                    return false;
-                }
-            } else if (pi+1 < pb.length()) {
-                if (pb.charAt(pi+1) == '*') {
-                    pi++;
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        }
-        
-        // judge whether p still has chars that are not in s
-        if (pi == pb.length()-1) {
-            if (pb.charAt(pi) == '*') {
-                return true;
-            } else {
-                return false;
-            }
-        } else if (pi == pb.length()) {
-            return true;
-        } else {
-            return false;
-        }
-        
+bool isMatch(const char *s, const char *p) {
+    assert(s && p);
+    if (*p == '\0') return *s == '\0';
+
+    // next char is not '*': must match current character
+    if (*(p+1) != '*') {
+        assert(*p != '*');
+        return ((*p == *s) || (*p == '.' && *s != '\0')) && isMatch(s+1, p+1);
     }
+    // next char is '*'
+    while ((*p == *s) || (*p == '.' && *s != '\0')) {
+        if (isMatch(s, p+2)) return true;
+        s++;
+    }
+    return isMatch(s, p+2);
 }
