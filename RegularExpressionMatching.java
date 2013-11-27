@@ -22,21 +22,51 @@
 
 /**
  * Algorithm 1:
- * change the C code below to java.
+ * 
  */
-bool isMatch(const char *s, const char *p) {
-    assert(s && p);
-    if (*p == '\0') return *s == '\0';
+public class Solution {
 
-    // next char is not '*': must match current character
-    if (*(p+1) != '*') {
-        assert(*p != '*');
-        return ((*p == *s) || (*p == '.' && *s != '\0')) && isMatch(s+1, p+1);
+    boolean isMatch(String s, String p) {
+        if (s == null || p == null) {
+            // throw an exception
+        }
+
+        boolean result = isMatch(s, p, 0, 0);
+
+        return result;
     }
-    // next char is '*'
-    while ((*p == *s) || (*p == '.' && *s != '\0')) {
-        if (isMatch(s, p+2)) return true;
-        s++;
+
+    boolean isMatch(String s, String p, int sIndex, int pIndex) {
+        if (pIndex == p.length()) {
+            return sIndex == s.length();
+        }
+
+        // next char is not '*': must match current character
+        if (pIndex+1 < p.length()) {
+            if (p.charAt(pIndex+1) != '*') {
+                if (p.charAt(pIndex) == '*') {
+                    // throw an exception
+                }
+
+                return (p.charAt(pIndex) == s.charAt(sIndex) || (p.charAt(pIndex) == '.' && sIndex != s.length())
+                        && isMatch(s, p, sIndex+1, pIndex+1));
+            }
+        } else {
+            if (p.charAt(pIndex) == '*') {
+                // throw an exception
+            }
+            return (p.charAt(pIndex) == s.charAt(sIndex) || (p.charAt(pIndex) == '.' && sIndex != s.length())
+                    && isMatch(s, p, sIndex+1, pIndex+1));
+        }
+        // next char is '*'
+        while (p.charAt(pIndex) == s.charAt(sIndex) || (p.charAt(pIndex) == '.' && sIndex != s.length())) {
+            if (isMatch(s, p, sIndex, pIndex+2)) {
+                return true;
+            }
+            sIndex++;
+        }
+
+
+        return isMatch(s, p, sIndex, pIndex + 2);
     }
-    return isMatch(s, p+2);
 }
