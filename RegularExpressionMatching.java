@@ -42,30 +42,25 @@ public class Solution {
         }
 
         // next char is not '*': must match current character
-        if (pIndex+1 < p.length()) {
-            if (p.charAt(pIndex+1) != '*') {
-                if (p.charAt(pIndex) == '*') {
-                    // throw an exception
-                }
-
-                return (p.charAt(pIndex) == s.charAt(sIndex) || (p.charAt(pIndex) == '.' && sIndex != s.length())
-                        && isMatch(s, p, sIndex+1, pIndex+1));
-            }
-        } else {
+        if (pIndex == p.length()-1 || p.charAt(pIndex+1) != '*') {
             if (p.charAt(pIndex) == '*') {
-                // throw an exception
+                    // throw an exception
             }
-            return (p.charAt(pIndex) == s.charAt(sIndex) || (p.charAt(pIndex) == '.' && sIndex != s.length())
-                    && isMatch(s, p, sIndex+1, pIndex+1));
+
+            if (sIndex == s.length()) {
+                return false;
+            }
+            return (p.charAt(pIndex) == s.charAt(sIndex) || p.charAt(pIndex) == '.' )
+                && isMatch(s, p, sIndex+1, pIndex+1);
         }
+
         // next char is '*'
-        while (p.charAt(pIndex) == s.charAt(sIndex) || (p.charAt(pIndex) == '.' && sIndex != s.length())) {
+        while (sIndex < s.length() && (p.charAt(pIndex) == '.' || p.charAt(pIndex) == s.charAt(sIndex))) {
             if (isMatch(s, p, sIndex, pIndex+2)) {
                 return true;
             }
             sIndex++;
         }
-
 
         return isMatch(s, p, sIndex, pIndex + 2);
     }
