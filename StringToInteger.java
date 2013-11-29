@@ -33,7 +33,6 @@
  * Algorithm 1:
  * Follow the requirements above.
  */
-
 public class Solution {
     public int atoi(String str) {
         // IMPORTANT: Please reset any member data you declared, as
@@ -42,67 +41,73 @@ public class Solution {
             return 0;
 
         int result = 0;
-        boolean negative = false;
-        boolean sign = false;
-        boolean digit = false;
+        boolean isNegative = false;
+        boolean hasSign = false;
+        boolean hasDigit = false;
         int digitStartIndex = 0;
-        int signStartIndex = 0;
-
+        int intLength = 0;
 
         for (int i = 0; i < str.length(); i++) {
-            if (str.charAt(i) >= '0' && str.charAt(i) <= '9') {
-                digitStartIndex = i;
-                digit = true;
-                break;
-            }
-
-            if (str.charAt(i) == '-') {
-                negative = true;
-                sign = true;
-                signStartIndex = i;
-                break;
-            } else if (str.charAt(i) == '+') {
-                sign = true;
-                signStartIndex = i;
-                break;
-            }
-
-            if (str.charAt(i) == ' ') {
-                continue;
-            } else if (str.charAt(i) < '0' || str.charAt(i) > '9') {
-                return 0;
-            }
-        }
-
-        if (!digit && !sign) {
-            return 0;
-        } else if (sign) {
-            digitStartIndex = signStartIndex + 1;
-        }
-
-        int intLength = 0;
-        for (int i = 0; i + digitStartIndex < str.length(); i++) {
-            if (str.charAt(i+digitStartIndex) >= '0' && str.charAt(i+digitStartIndex) <= '9') {
+            if (!hasSign && !hasDigit) {
+                if (str.charAt(i) == ' ') {
+                    // do nothing just ignore the space
+                } else if (str.charAt(i) == '-') {
+                    isNegative = true;
+                    hasSign = true;
+                } else if (str.charAt(i) == '+') {
+                    hasSign = true;
+                } else if (str.charAt(i) >= '0' && str.charAt(i) <= '9') {
+                    hasDigit = true;
+                    digitStartIndex = i;
+                    intLength++;
+                } else {
+                    return 0;
+                }
+            } else if (hasSign && !hasDigit) {
+                if (str.charAt(i) >= '0' && str.charAt(i) <= '9') {
+                    hasDigit = true;
+                    digitStartIndex = i;
+                    intLength++;
+                } else {
+                    return 0;
+                }
+            } else if (str.charAt(i) >= '0' && str.charAt(i) <= '9') {
                 intLength++;
             } else {
                 break;
             }
         }
 
-        for (int i = 0; i < intLength; i++) {
-            if (negative) {
-                if (result - (int)(str.charAt(i+digitStartIndex)-'0')*Math.pow(10, intLength-1-i) >= Integer.MIN_VALUE)
-                    result -= (int)(str.charAt(i+digitStartIndex)-'0')*Math.pow(10, intLength-1-i);
+        if (!hasDigit) {
+            return 0;
+        }
+
+        if (intLength > 10) {
+            return isNegative ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+        }
+
+        int base = 1;
+        for (int i = digitStartIndex+intLength-1; i >= digitStartIndex; i--) {
+            int digit = str.charAt(i) - '0';
+            long tempResult;
+            if (isNegative) {
+                tempResult = (long)result - (long)digit*base;
+                if (tempResult >= Integer.MIN_VALUE)
+                    result = (int)tempResult;
                 else
                     return Integer.MIN_VALUE;
             } else {
-                if (result + (int)(str.charAt(i+digitStartIndex)-'0')*Math.pow(10, intLength-1-i) <= Integer.MAX_VALUE)
-                    result += (int)(str.charAt(i+digitStartIndex)-'0')*Math.pow(10, intLength-1-i);
+                tempResult = (long)result + (long)digit*base;
+                if (tempResult <= Integer.MAX_VALUE)
+                    result = (int)tempResult;
                 else
                     return Integer.MAX_VALUE;
             }
+
+            base *= 10;
         }
 
         return result;
     }
 }
+
