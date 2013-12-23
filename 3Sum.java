@@ -17,3 +17,39 @@
  * Aglorithm 1:
  * 
  */
+public class Solution {
+    public ArrayList<ArrayList<Integer>> threeSum(int[] num) {
+        Arrays.sort(num);
+        int indexStart = 0;
+        int indexEnd = num.length - 1;
+        ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
+        ArrayList<Integer> triplet;
+
+        while (indexStart < indexEnd-1) {
+            for (int i = indexStart + 1; i < indexEnd; i++) {
+                if (num[indexStart] + num[indexEnd] + num[i] == 0) {
+                    triplet = new ArrayList<Integer>();
+                    triplet.add(num[indexStart]);
+                    triplet.add(num[i]);
+                    triplet.add(num[indexEnd]);
+                    result.add(triplet);
+                    break;
+                }
+            }
+
+            if (num[indexStart] + num[indexEnd] >= 0) {
+                indexEnd--;
+                while (indexStart < indexEnd-1 && num[indexEnd] == num[indexEnd + 1]) {
+                    indexEnd--;
+                }
+            } else {
+                indexStart++;
+                while (indexStart < indexEnd-1 && num[indexStart] == num[indexStart - 1]) {
+                    indexStart++;
+                }
+            }
+        }
+
+        return result;
+    }
+}
