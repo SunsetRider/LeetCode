@@ -9,7 +9,7 @@
  *  After removing the second node from the end, the linked list becomes 1->2->3->5.
  * Note:
  * Given n will always be valid.
- * Try to do this in one pass. you want.
+ * Try to do this in one pass.
  */
 
 /**
