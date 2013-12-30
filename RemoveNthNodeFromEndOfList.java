@@ -29,31 +29,23 @@
  */
 public class Solution {
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        if (n <= 0) {
-            return head;
-        }
-
         ListNode sentry = head;
-        for (int i = 0; i < n; i++) {
-            sentry = sentry.next;
-
-            if (sentry == null) {
-                if (i < n-1) {
-                    return head;
-                } else if (i == n-1) {
-                    return head.next;
-                }
-            }
-        }
-
-        sentry = sentry.next;
         ListNode beforeNth = head;
-        ListNode Nth = head.next;
+        ListNode Nth = head;
 
-        while (sentry != null) {
-            beforeNth = beforeNth.next;
-            Nth = Nth.next;
+        for (int i = 0; sentry != null; i++) {
             sentry = sentry.next;
+            if (i == n-1 && sentry == null) {
+                return head.next;
+            }
+
+            if (i == n) {
+                beforeNth = head;
+                Nth = head.next;
+            } else if (i > n) {
+                beforeNth = beforeNth.next;
+                Nth = Nth.next;
+            }
         }
 
         beforeNth.next = Nth.next;
@@ -62,4 +54,5 @@ public class Solution {
         return head;
     }
 }
+
 
