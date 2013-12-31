@@ -34,12 +34,13 @@ public class Solution {
 
         ListNode result = head.next;
         ListNode tail = null; // store the swapped list's tail
+        ListNode latter;
         for (ListNode former = head; former != null; former = former.next) {
             if (former.next == null) {
                 break;
             }
 
-            ListNode latter = former.next;
+            latter = former.next;
 
             former.next = latter.next;
             latter.next = former;
