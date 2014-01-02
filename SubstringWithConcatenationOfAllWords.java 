@@ -1,0 +1,51 @@
+/**
+ * Problem:
+ * You are given a string, S, and a list of words, L, that are all of the same length. Find all starting indices of substring(s) in S that is a concatenation of each word in L exactly once and without any intervening characters.
+ * 
+ * For example, given:
+ * S: "barfoothefoobarman"
+ * L: ["foo", "bar"]
+ * 
+ * You should return the indices: [0,9].
+ * (order does not matter).
+ */
+
+/**
+ * Aglorithm 1:
+ * Get all the possible words string then find it in S.
+ * Time Limit Exceeded
+ */
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class Solution {
+    public ArrayList<Integer> findSubstring(String S, String[] L) {
+        ArrayList<String> wordList = new ArrayList<String>();
+        ArrayList<String> wordStringList = new ArrayList<String> ();
+        ArrayList<Integer> result = new ArrayList<Integer>();
+
+        Collections.addAll(wordList, L);
+
+        setWordStrings(wordStringList, wordList, "");
+        for (String i : wordStringList) {
+            int index = S.indexOf(i);
+            if (index != -1) {
+                result.add(index);
+            }
+        }
+        return result;
+    }
+
+    public void setWordStrings(ArrayList<String> wordStringList, ArrayList<String> wordList, String wordString) {
+        if (wordList.size() == 0) {
+            wordStringList.add(wordString);
+            return;
+        }
+        for (int i = 0; i < wordList.size(); i++) {
+            ArrayList<String> tempWordList = new ArrayList<String>(wordList);
+            String tempWordString = wordString + tempWordList.get(i);
+            tempWordList.remove(i);
+            setWordStrings(wordStringList, tempWordList, tempWordString);
+        }
+    }
+}
