@@ -1,0 +1,36 @@
+/**
+ * Problem:
+ * Divide two integers without using multiplication, division and mod operator.
+ */
+
+/**
+ * Aglorithm 1:
+ * 1.Change the dividend and divisor to positive long integers.
+ * 2.Use bit operation to do the division.
+ * 3.Return the result with signal.
+ */
+public class Solution {
+    public int divide(int dividend, int divisor) {
+        if (dividend == 0) {
+            return 0;
+        }
+        
+        // convert the dividend and divisor to long to avoid overflow
+        long dividendL = Math.abs((long)dividend);
+        long divisorL = Math.abs((long)divisor);
+
+        int result = 0;
+        // in each iteration set 2^i to divisor and get part of the quotient
+        for (int i = 31; i >= 0; i--) {
+            if (dividendL>>i >= divisorL) {
+                result += 1<<i;
+                dividendL -= divisorL<<i;
+            }
+        }
+
+        if ((dividend>0 && divisor>0) || (dividend<0 && divisor<0)) {
+            return result;
+        }
+        return -result;
+    }
+}
