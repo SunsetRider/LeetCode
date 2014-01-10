@@ -12,40 +12,43 @@
 
 /**
  * Aglorithm 1:
- * Get all the possible words string then find it in S.
- * Time Limit Exceeded
+ * 1.Use HashMap to store the frequencies of every word in L
+ * 2.Check every concatenation of S, find out if it is made by concatenating the words with coresponding frequencies.
  */
-import java.util.ArrayList;
-import java.util.Collections;
-
 public class Solution {
     public ArrayList<Integer> findSubstring(String S, String[] L) {
-        ArrayList<String> wordList = new ArrayList<String>();
-        ArrayList<String> wordStringList = new ArrayList<String> ();
+        int wordLength = L[0].length();
+
         ArrayList<Integer> result = new ArrayList<Integer>();
 
-        Collections.addAll(wordList, L);
-
-        setWordStrings(wordStringList, wordList, "");
-        for (String i : wordStringList) {
-            int index = S.indexOf(i);
-            if (index != -1) {
-                result.add(index);
+        // store the words and frequencies in a hash table
+        HashMap<String, Integer> words = new HashMap<String, Integer>();
+        for (String s : L) {
+            if (words.containsKey(s)) {
+                words.put(s, words.get(s)+1);
+            } else {
+                words.put(s, 1);
             }
         }
-        return result;
-    }
 
-    public void setWordStrings(ArrayList<String> wordStringList, ArrayList<String> wordList, String wordString) {
-        if (wordList.size() == 0) {
-            wordStringList.add(wordString);
-            return;
+        // find concatenations                                     
+        for (int i=0; i <= S.length() - L.length*wordLength; ++i) {
+            // check if it is a concatenation
+            HashMap<String, Integer> target = new HashMap<String, Integer>(words);
+            for (int j = i; j <= S.length() - wordLength && !target.isEmpty(); j+=wordLength) {
+                String sub = S.substring(j, j+wordLength);
+                if (!target.containsKey(sub)) break;
+                if (target.get(sub) > 1) {  // reduce the frequency
+                    target.put(sub, target.get(sub)-1);
+                } else {  // remove the word if only one left
+                    target.remove(sub);
+                }
+            }
+            if (target.isEmpty()) {
+                result.add(i);
+            }
         }
-        for (int i = 0; i < wordList.size(); i++) {
-            ArrayList<String> tempWordList = new ArrayList<String>(wordList);
-            String tempWordString = wordString + tempWordList.get(i);
-            tempWordList.remove(i);
-            setWordStrings(wordStringList, tempWordList, tempWordString);
-        }
+
+        return result;
     }
 }
