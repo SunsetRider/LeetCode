@@ -47,3 +47,51 @@ public class Solution {
         return;
     }
 }
+
+/**
+ * Aglorithm 2:
+ * 1.Find the longest descending tail of the array and reverse them into ascending order.
+ * 2.Replace the number aheand of the tail with the first number which is larger in the tail.
+ */
+public class Solution {
+    public void nextPermutation(int[] num) {
+        if (num.length < 2) {
+            return;
+        }
+
+        // find the longest descending tail
+        int index = -1;
+        for (int i = num.length-2; i >= 0; i--) {
+            if (num[i] < num[i+1]) {
+                index = i;
+                break;
+            }
+        }
+
+        if (index == -1) {
+            for (int i = 0; i < num.length/2; i++) {
+                swap(num, i, num.length-1-i);
+            }
+            return;
+        }
+
+        // reverse the descending tail
+        for (int i = 0; i < (num.length-index)/2; i++) {
+            swap(num, index+1+i, num.length-1-i);
+        }
+
+        // replace num[index] with the first number which is larger in the tail
+        for (int i = index+1; i < num.length; i++) {
+            if (num[i] > num[index]) {
+                swap(num, i, index);
+                return;
+            }
+        }
+    }
+
+    public void swap (int[] num, int a, int b) {
+        int temp = num[a];
+        num[a] = num[b];
+        num[b] = temp;
+    }
+}
