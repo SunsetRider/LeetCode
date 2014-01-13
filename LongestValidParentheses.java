@@ -9,56 +9,29 @@
 
 /**
  * Aglorithm 1:
- * wrong answer
+ * Use a stack to store the position of the left parentheses and use a variable to store the last right parenthesis 
  */
-import java.util.Stack;
-
 public class Solution {
     public int longestValidParentheses(String s) {
-        Stack<Character> parentheses = new Stack<Character> ();
         int result = 0;
-        int lastLength = 0;
-        int length = 0;
+        int last = -1;
+        Stack<Integer> leftIndex = new Stack<Integer>();
+
         for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (c == '(') {
-                if (!parentheses.empty()) {
-                    if (parentheses.peek() == '(') {
-                        lastLength = length;
-                        length = 0;
-                    }
-                }
-                parentheses.push(c);
-            }
-
-            if (c == ')') {
-                if (parentheses.empty()) {
-                    if (length > result) {
-                        result = length;
-                    }
-                    length = 0;
-                    continue;
-                }
-
-                if (parentheses.pop() == '(') {
-                    if (parentheses.empty()) {
-                        length += lastLength + 2;
-                        if (lastLength > result) {
-                            result = lastLength;
-                        }
-                        lastLength = 0;
+            if (s.charAt(i) == '(') {
+                leftIndex.push(i);
+            } else {
+                if (leftIndex.isEmpty()) {
+                    last = i;
+                } else {
+                    leftIndex.pop();
+                    if (leftIndex.isEmpty()) {
+                        result = Math.max(result, i-last);
                     } else {
-                        length += 2;
+                        result = Math.max(result, i-leftIndex.peek());
                     }
                 }
             }
-        }
-
-        if (lastLength > result) {
-            result = lastLength;
-        }
-        if (length > result) {
-            result = length;
         }
 
         return result;
