@@ -7,14 +7,14 @@
 
 /**
  * Aglorithm 1:
- * Check row, column and 3x3 cube.
+ * Check rows, columns and 3x3 sub-boxes.
  * If there's duplicated character, return false.
  */
 public class Solution {
     public boolean isValidSudoku(char[][] board) {
         HashSet<Character> num = new HashSet<Character>();
         
-        // check row
+        // check rows
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 char c = board[i][j];
@@ -29,7 +29,7 @@ public class Solution {
             num.clear();
         }
         
-        // check column
+        // check columns
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 char c = board[j][i];
@@ -44,7 +44,7 @@ public class Solution {
             num.clear();
         }
         
-        // check 3x3 cube
+        // check 3x3 sub-boxes
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 for (int m = 0; m < 3; m++) {
