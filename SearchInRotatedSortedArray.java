@@ -15,10 +15,6 @@
  */
 public class Solution {
     public int search(int[] A, int target) {
-    if (A.length == 0) {
-        return -1;
-    }
-    
     int start = 0;
     int end = A.length-1;
     int mid;
